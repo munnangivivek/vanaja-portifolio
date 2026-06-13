@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Content Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --primary: #0D9488;
+      --primary-hover: #0F766E;
+      --danger: #EF4444;
+      --radius: 8px;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      position: sticky;
+      top: 5rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    
+    .nav-item:last-child { border-bottom: none; }
+    .nav-item:hover { background: #F1F5F9; }
+    .nav-item.active { background: var(--primary); color: white; }
+
+    /* Editor Sections */
+    .section-container {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .section-container.active {
+      display: block;
+    }
+
+    h2 { margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--text); }
+    h3 { margin: 1.5rem 0 1rem; font-size: 1.1rem; color: var(--text); padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+    /* Form Elements */
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 0.25rem; font-weight: 500; font-size: 0.9rem; }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+
+    .help-text { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: #E2E8F0; color: var(--text); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-small { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+
+    /* Array Items (Projects, Experience, etc) */
+    .array-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
+    .array-item {
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: var(--radius);
+      position: relative;
+      background: #F8FAFC;
+    }
+    .array-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .flex-row { display: flex; gap: 1rem; }
+    .flex-1 { flex: 1; }
+
+    .instructions {
+      background: #EFF6FF;
+      border-left: 4px solid #3B82F6;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Portfolio Content Manager</h1>
+    <div>
+      <input type="file" id="file-import" accept=".json" style="display: none;">
+      <button class="btn btn-secondary" onclick="document.getElementById('file-import').click()">Import JSON</button>
+      <button class="btn btn-primary" onclick="exportJSON()">Export JSON</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <ul class="nav-list">
+        <li class="nav-item active" data-target="instructions-sec">How to Use</li>
+        <li class="nav-item" data-target="meta-sec">Basic Info</li>
+        <li class="nav-item" data-target="hero-sec">Hero Section</li>
+        <li class="nav-item" data-target="about-sec">About & Stats</li>
+        <li class="nav-item" data-target="projects-sec">Projects</li>
+        <li class="nav-item" data-target="experience-sec">Experience</li>
+      </ul>
+    </aside>
+
+    <main id="editor-main">
+      <!-- Instructions -->
+      <section id="instructions-sec" class="section-container active">
+        <h2>How to update your portfolio</h2>
+        <div class="instructions">
+          <p><strong>1. Load Data:</strong> If you have an existing <code>content.json</code> file, click "Import JSON" at the top right to load your current data.</p>
+          <p><strong>2. Edit:</strong> Use the sidebar to navigate between sections. Update the text, add new projects, or modify your experience.</p>
+          <p><strong>3. Save:</strong> When you are done, click <strong>"Export JSON"</strong>. This will download a new <code>content.json</code> file.</p>
+          <p><strong>4. Deploy:</strong> Replace the old <code>content.json</code> file in your portfolio folder with the new downloaded one.</p>
+        </div>
+      </section>
+
+      <!-- Meta Info -->
+      <section id="meta-sec" class="section-container">
+        <h2>Basic Information</h2>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="meta-name" data-path="meta.name">
+        </div>
+        <div class="form-group">
+          <label>Professional Title</label>
+          <input type="text" id="meta-title" data-path="meta.title">
+        </div>
+        <div class="form-group">
+          <label>Tagline / Short Pitch</label>
+          <input type="text" id="meta-tagline" data-path="meta.tagline">
+        </div>
+        <div class="flex-row">
+          <div class="form-group flex-1">
+            <label>Email Address</label>
+            <input type="email" id="meta-email" data-path="meta.email">
+          </div>
+          <div class="form-group flex-1">
+            <label>Phone Number</label>
+            <input type="text" id="meta-phone" data-path="meta.phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="meta-location" data-path="meta.location">
+        </div>
+      </section>
+
+      <!-- Hero -->
+      <section id="hero-sec" class="section-container">
+        <h2>Hero Section</h2>
+        <div class="form-group">
+          <label>Headline</label>
+          <input type="text" id="hero-headline" data-path="hero.headline">
+        </div>
+        <div class="form-group">
+          <label>Subtitle / Description</label>
+          <textarea id="hero-subtitle" data-path="hero.subtitle"></textarea>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about-sec" class="section-container">
+        <h2>About Me</h2>
+        <div class="form-group">
+          <label>Profile Image Path</label>
+          <input type="text" id="about-image" data-path="about.image" placeholder="e.g., assets/profile.jpg">
+          <div class="help-text">Relative path to your image file, or a full URL.</div>
+        </div>
+        <div class="form-group">
+          <label>Bio Paragraphs</label>
+          <div class="help-text" style="margin-bottom: 8px;">Separate paragraphs with double newlines (Enter twice).</div>
+          <textarea id="about-bio" style="min-height: 200px;"></textarea>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects-sec" class="section-container">
+        <h2>Projects</h2>
+        <div id="projects-list" class="array-list"></div>
+        <button class="btn btn-secondary" onclick="addProject()">+ Add Project</button>
+      </section>
+
+      <!-- Experience -->
+      <section id="experience-sec" class="section-container">
+        <h2>Experience</h2>
+        <div id="experience-list" class="array-list"></div>
+        <button class="btn btn-secondary" onclick="addExperience()">+ Add Role</button>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Initial empty state
+    let data = {
+      meta: { name: "", title: "", tagline: "", email: "", phone: "", location: "" },
+      hero: { headline: "", subtitle: "" },
+      about: { bio: [], image: "" },
+      projects: [],
+      experience: []
+    };
+
+    // --- Navigation Logic ---
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active'));
+        
+        item.classList.add('active');
+        document.getElementById(item.getAttribute('data-target')).classList.add('active');
+      });
+    });
+
+    // --- File Import ---
+    document.getElementById('file-import').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          // Preserve any existing fields we might not be editing in this simple CMS
+          data = { ...data, ...imported };
+          populateForms();
+          alert('Content loaded successfully!');
+        } catch (err) {
+          alert('Error parsing JSON file. Make sure it is valid.');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // --- Populate Forms ---
+    function populateForms() {
+      // Flat fields
+      document.querySelectorAll('input[data-path], textarea[data-path]').forEach(el => {
+        const path = el.getAttribute('data-path').split('.');
+        let val = data;
+        path.forEach(p => val = val ? val[p] : '');
+        el.value = val || '';
+      });
+
+      // Special handling for bio array
+      if (data.about && data.about.bio) {
+        document.getElementById('about-bio').value = data.about.bio.join('\n\n');
+      }
+
+      // Arrays
+      renderProjects();
+      renderExperience();
+    }
+
+    // --- Save Data ---
+    function collectData() {
+      // Flat fields
+      document.querySelectorAll('input[data-path], textarea[data-path]').forEach(el => {
+        const path = el.getAttribute('data-path').split('.');
+        let target = data;
+        for (let i = 0; i < path.length - 1; i++) {
+          if (!target[path[i]]) target[path[i]] = {};
+          target = target[path[i]];
+        }
+        target[path[path.length - 1]] = el.value;
+      });
+
+      // Bio array
+      const bioText = document.getElementById('about-bio').value;
+      data.about.bio = bioText.split('\n\n').filter(p => p.trim() !== '');
+
+      return data;
+    }
+
+    function exportJSON() {
+      const updatedData = collectData();
+      const blob = new Blob([JSON.stringify(updatedData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'content.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // --- Array Renderers: Projects ---
+    function renderProjects() {
+      const container = document.getElementById('projects-list');
+      container.innerHTML = '';
+      
+      if (!data.projects) data.projects = [];
+      
+      data.projects.forEach((proj, i) => {
+        const div = document.createElement('div');
+        div.className = 'array-item';
+        div.innerHTML = `
+          <div class="array-item-header">
+            <span>Project ${i + 1}</span>
+            <button class="btn btn-small btn-danger" onclick="removeProject(${i})">Remove</button>
+          </div>
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" value="${proj.title || ''}" onchange="updateProject(${i}, 'title', this.value)">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea onchange="updateProject(${i}, 'description', this.value)">${proj.description || ''}</textarea>
+          </div>
+          <div class="flex-row">
+            <div class="form-group flex-1">
+              <label>Category (for filtering)</label>
+              <input type="text" value="${proj.category || ''}" onchange="updateProject(${i}, 'category', this.value)">
+            </div>
+            <div class="form-group flex-1">
+              <label>Tags (comma separated)</label>
+              <input type="text" value="${(proj.tags || []).join(', ')}" onchange="updateProject(${i}, 'tags', this.value.split(',').map(s=>s.trim()))">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function addProject() {
+      if (!data.projects) data.projects = [];
+      data.projects.push({ title: "New Project", description: "", category: "category", tags: [] });
+      renderProjects();
+    }
+
+    function removeProject(index) {
+      data.projects.splice(index, 1);
+      renderProjects();
+    }
+
+    function updateProject(index, key, value) {
+      data.projects[index][key] = value;
+    }
+
+    // --- Array Renderers: Experience ---
+    function renderExperience() {
+      const container = document.getElementById('experience-list');
+      container.innerHTML = '';
+      
+      if (!data.experience) data.experience = [];
+      
+      data.experience.forEach((exp, i) => {
+        const div = document.createElement('div');
+        div.className = 'array-item';
+        div.innerHTML = `
+          <div class="array-item-header">
+            <span>Role ${i + 1}</span>
+            <button class="btn btn-small btn-danger" onclick="removeExperience(${i})">Remove</button>
+          </div>
+          <div class="flex-row">
+            <div class="form-group flex-1">
+              <label>Role / Title</label>
+              <input type="text" value="${exp.role || ''}" onchange="updateExperience(${i}, 'role', this.value)">
+            </div>
+            <div class="form-group flex-1">
+              <label>Company</label>
+              <input type="text" value="${exp.company || ''}" onchange="updateExperience(${i}, 'company', this.value)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" value="${exp.duration || ''}" placeholder="e.g. 2020 - Present" onchange="updateExperience(${i}, 'duration', this.value)">
+          </div>
+          <div class="form-group">
+            <label>Achievements (one per line)</label>
+            <textarea onchange="updateExperience(${i}, 'achievements', this.value.split('\\n').filter(s=>s.trim()!==''))">${(exp.achievements || []).join('\n')}</textarea>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function addExperience() {
+      if (!data.experience) data.experience = [];
+      data.experience.push({ role: "New Role", company: "", duration: "", achievements: [] });
+      renderExperience();
+    }
+
+    function removeExperience(index) {
+      data.experience.splice(index, 1);
+      renderExperience();
+    }
+
+    function updateExperience(index, key, value) {
+      data.experience[index][key] = value;
+    }
+
+    // Initialize with existing data object (useful if loaded over HTTP, but here we expect File Import)
+    // Try to fetch local content.json if running on a server
+    fetch('content.json')
+      .then(res => res.json())
+      .then(json => {
+        data = { ...data, ...json };
+        populateForms();
+      })
+      .catch(() => {
+        // Will fail over file:// protocol, that's fine, user will use Import button
+        populateForms();
+      });
+
+  </script>
+</body>
+</html>

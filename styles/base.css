@@ -1,0 +1,193 @@
+/* ===========================================
+   BASE STYLES — Reset, Typography, Defaults
+   =========================================== */
+
+/* ── Modern CSS Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  background-color: var(--color-bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+h1 { font-size: var(--text-6xl); font-weight: var(--weight-extrabold); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); }
+
+p {
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-relaxed);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Links ── */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+/* ── Focus Styles (Accessibility) ── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--color-teal-100);
+  color: var(--color-teal-900);
+}
+
+/* ── Images ── */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* ── Lists ── */
+ul, ol {
+  list-style: none;
+}
+
+/* ── Form Elements ── */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ── Tables ── */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ── Misc ── */
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+
+strong, b {
+  font-weight: var(--weight-semibold);
+}
+
+/* ── Skip Link (Accessibility) ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  z-index: var(--z-toast);
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Screen Reader Only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
