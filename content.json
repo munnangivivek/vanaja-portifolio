@@ -1,29 +1,27 @@
 {
   "meta": {
-    "name": "Vanaja",
-    "title": "Certified Professional Coder",
+    "name": "Akunuri Vanaja",
+    "title": "Medical Coding Fresher",
     "tagline": "Precision in Every Code, Excellence in Every Claim",
-    "email": "vanaja.coder@email.com",
-    "phone": "+1 (555) 234-5678",
-    "location": "Austin, Texas"
+    "email": "vanajakunuri685@gmail.com",
+    "phone": "7093995436",
+    "location": "Nidumolu, Andhra Pradesh, India"
   },
   "hero": {
     "headline": "Translating Clinical Bravery Into Actionable Data.",
-    "subtitle": "Bridging the gap between front-line patient care and backend revenue optimization through precise, compliant, and data-driven medical coding.",
+    "subtitle": "Detail-oriented Medical Coding Fresher with a strong academic background in Pharmacy, seeking to ensure accurate code assignment and maintain compliance with healthcare regulations.",
     "ctaPrimary": { "text": "View My Work", "link": "#projects" },
     "ctaSecondary": { "text": "Get In Touch", "link": "#contact" }
   },
   "about": {
     "bio": [
-      "I'm a Certified Professional Coder (CPC) with over 8 years of experience in medical coding and billing across multi-specialty physician practices, outpatient facilities, and hospital systems.",
-      "My expertise spans diagnostic and procedural coding, chart auditing, denial management, and revenue cycle optimization. I'm passionate about translating complex clinical documentation into accurate codes that ensure compliance and maximize reimbursement.",
-      "I hold certifications from AAPC including CPC and CPMA, and I stay current with annual coding updates, CMS guidelines, and payer-specific requirements. I believe in continuous learning and contributing to the healthcare community through mentorship and knowledge sharing."
+      "I am Akunuri Vanaja, a detail-oriented Medical Coding Fresher with a B.Pharmacy (CGPA 8.0) and comprehensive training in ICD-10-CM, CPT, and HCPCS Level II. I am eager to apply my knowledge of medical record analysis, healthcare compliance, and accurate code assignment to contribute effectively to a dynamic revenue cycle management team."
     ],
     "stats": [
-      { "value": 8, "suffix": "+", "label": "Years Experience" },
-      { "value": 98.5, "suffix": "%", "label": "Coding Accuracy" },
-      { "value": 150, "suffix": "K+", "label": "Claims Processed" },
-      { "value": 12, "suffix": "+", "label": "Certifications & Trainings" }
+      { "value": 8.0, "suffix": "", "label": "B.Pharmacy CGPA" },
+      { "value": 4, "suffix": "", "label": "Certifications" },
+      { "value": 3, "suffix": "", "label": "Languages Known" },
+      { "value": 100, "suffix": "%", "label": "Attention to Detail" }
     ]
   },
   "skills": [
@@ -31,56 +29,49 @@
       "category": "Medical Coding",
       "icon": "code",
       "items": [
-        { "name": "ICD-10-CM / ICD-10-PCS", "level": 95 },
-        { "name": "CPT Coding", "level": 98 },
-        { "name": "HCPCS Level II", "level": 92 },
-        { "name": "E/M Coding (2021+ Guidelines)", "level": 96 },
-        { "name": "Modifier Application", "level": 90 },
-        { "name": "Medical Terminology", "level": 97 }
+        { "name": "ICD-10-CM Coding", "level": 90 },
+        { "name": "CPT Coding", "level": 85 },
+        { "name": "HCPCS Level II Coding", "level": 85 },
+        { "name": "Medical Terminology", "level": 95 },
+        { "name": "Anatomy & Physiology", "level": 95 }
       ]
     },
     {
-      "category": "Revenue Cycle",
-      "icon": "chart",
-      "items": [
-        { "name": "Charge Capture", "level": 93 },
-        { "name": "Denial Management", "level": 91 },
-        { "name": "Claims Submission", "level": 95 },
-        { "name": "AR Follow-Up", "level": 88 },
-        { "name": "Payment Posting", "level": 90 },
-        { "name": "Fee Schedule Analysis", "level": 85 }
-      ]
-    },
-    {
-      "category": "Compliance & Auditing",
+      "category": "Documentation & Compliance",
       "icon": "shield",
       "items": [
-        { "name": "HIPAA Compliance", "level": 96 },
-        { "name": "Chart Auditing", "level": 94 },
-        { "name": "OIG Guidelines", "level": 90 },
-        { "name": "Risk Adjustment (HCC)", "level": 88 },
-        { "name": "Documentation Improvement", "level": 92 },
-        { "name": "Fraud & Abuse Prevention", "level": 89 }
+        { "name": "Clinical Documentation Review", "level": 85 },
+        { "name": "Healthcare Compliance", "level": 80 },
+        { "name": "Medical Record Analysis", "level": 90 },
+        { "name": "Claims Processing Basics", "level": 80 }
       ]
     },
     {
-      "category": "Tools & Systems",
+      "category": "Soft Skills",
+      "icon": "award",
+      "items": [
+        { "name": "Attention to Detail", "level": 100 },
+        { "name": "Problem Solving", "level": 90 },
+        { "name": "Analytical Thinking", "level": 90 },
+        { "name": "Time Management", "level": 95 }
+      ]
+    },
+    {
+      "category": "Software & Languages",
       "icon": "tool",
       "items": [
-        { "name": "Epic EHR", "level": 94 },
-        { "name": "3M Encoder", "level": 91 },
-        { "name": "Optum EncoderPro", "level": 93 },
-        { "name": "Microsoft Excel / Analytics", "level": 88 },
-        { "name": "Cerner / Oracle Health", "level": 85 },
-        { "name": "AdvancedMD", "level": 82 }
+        { "name": "Microsoft Word", "level": 90 },
+        { "name": "Microsoft Excel", "level": 85 },
+        { "name": "Microsoft PowerPoint", "level": 90 },
+        { "name": "English, Telugu, Hindi", "level": 100 }
       ]
     }
   ],
   "projects": [
     {
-      "title": "Multi-Specialty Coding Audit Program",
-      "description": "Designed and implemented a comprehensive coding audit program for a 45-provider multi-specialty group, resulting in a 23% reduction in claim denials and $1.2M in recovered revenue over 12 months.",
-      "tags": ["Chart Auditing", "ICD-10", "CPT", "Compliance"],
+      "title": "Medical Coding Case Study Project",
+      "description": "Reviewed sample patient medical records, assigned ICD-10-CM diagnosis codes and CPT procedure codes based on documented conditions, and verified accuracy using standard guidelines.",
+      "tags": ["ICD-10-CM", "CPT", "Chart Auditing", "Guidelines"],
       "image": "assets/project-audit.jpg",
       "category": "audit",
       "featured": true,
@@ -88,132 +79,63 @@
       "sourceUrl": "#"
     },
     {
-      "title": "E/M Documentation Improvement Initiative",
-      "description": "Led a provider education initiative on 2021 E/M guidelines, training 30+ physicians and APPs. Achieved 97% documentation compliance rate within 6 months.",
-      "tags": ["E/M Coding", "Provider Education", "Documentation"],
+      "title": "Clinical Documentation Review Project",
+      "description": "Analyzed healthcare documentation for coding completeness, identified documentation gaps, and practiced accurate code assignment through chart review exercises on simulated patient scenarios.",
+      "tags": ["Documentation", "Review", "Analysis", "Compliance"],
       "image": "assets/project-documentation.jpg",
       "category": "compliance",
-      "featured": false,
-      "liveUrl": "#",
-      "sourceUrl": "#"
-    },
-    {
-      "title": "Denial Analytics Dashboard",
-      "description": "Built an Excel-based analytics dashboard tracking denial trends by payer, provider, and code. Identified top denial reasons and reduced overall denial rate from 12% to 4.8%.",
-      "tags": ["Analytics", "Excel", "Denial Management", "Revenue Cycle"],
-      "image": "assets/project-analytics.jpg",
-      "category": "analytics",
-      "featured": false,
-      "liveUrl": "#",
-      "sourceUrl": "#"
-    },
-    {
-      "title": "HCC Risk Adjustment Accuracy Program",
-      "description": "Implemented a retrospective and prospective HCC coding review program for a Medicare Advantage plan, improving RAF score accuracy by 18% and ensuring CMS compliance.",
-      "tags": ["HCC", "Risk Adjustment", "Medicare", "Compliance"],
-      "image": "assets/project-risk.jpg",
-      "category": "audit",
       "featured": true,
-      "liveUrl": "#",
-      "sourceUrl": "#"
-    },
-    {
-      "title": "Surgical Coding Optimization",
-      "description": "Reviewed and optimized surgical coding workflows for an orthopedic surgery center, correcting modifier usage and unbundling errors that increased clean claim rates to 96%.",
-      "tags": ["Surgical Coding", "Modifiers", "NCCI Edits", "Optimization"],
-      "image": "assets/project-surgical.jpg",
-      "category": "tools",
-      "featured": false,
-      "liveUrl": "#",
-      "sourceUrl": "#"
-    },
-    {
-      "title": "Telehealth Coding Compliance Guide",
-      "description": "Authored a comprehensive telehealth coding and billing compliance guide covering place of service codes, modifier usage, and payer-specific requirements during and post-pandemic.",
-      "tags": ["Telehealth", "Compliance", "Billing", "Guidelines"],
-      "image": "assets/project-telehealth.jpg",
-      "category": "compliance",
-      "featured": false,
       "liveUrl": "#",
       "sourceUrl": "#"
     }
   ],
   "experience": [
     {
-      "company": "MedVista Health Partners",
-      "role": "Senior Medical Coder & Auditor",
-      "duration": "2021 — Present",
+      "company": "SR Technologies",
+      "role": "Medical Coding Trainee",
+      "duration": "July 2025 — September 2025",
       "achievements": [
-        "Lead coding audits across 5 specialty departments with 98.5% accuracy rate",
-        "Reduced claim denial rate by 23% through targeted education and process improvement",
-        "Mentor team of 6 junior coders on complex surgical and E/M coding",
-        "Developed standardized coding audit templates adopted organization-wide"
+        "Completed training in Medical Terminology and Anatomy & Physiology.",
+        "Learned ICD-10-CM diagnosis coding and CPT/HCPCS Level II procedural coding systems.",
+        "Practiced assigning diagnosis and procedure codes using sample medical records.",
+        "Developed understanding of coding guidelines, documentation review, and claim processing concepts.",
+        "Gained exposure to healthcare compliance and coding accuracy standards."
       ]
     },
     {
-      "company": "Summit Regional Medical Center",
-      "role": "Outpatient Medical Coder",
-      "duration": "2018 — 2021",
+      "company": "KVSR Siddhartha College of Pharmaceutical Sciences",
+      "role": "Bachelor of Pharmacy (B.Pharmacy) Student",
+      "duration": "2021 — 2025",
       "achievements": [
-        "Coded 80+ charts daily across Emergency, Radiology, and Laboratory departments",
-        "Maintained 97% coding accuracy with <2% denial rate on coded claims",
-        "Implemented new charge capture workflow reducing coding lag by 40%",
-        "Trained 12 new coders during EMR transition to Epic"
+        "Graduated with a CGPA of 8.0.",
+        "Affiliated to Krishna University, Machilipatnam.",
+        "Developed a strong foundation in pharmacology, human anatomy, and medical science."
       ]
     },
     {
-      "company": "PrecisionCode Consulting",
-      "role": "Medical Coding Specialist",
-      "duration": "2016 — 2018",
+      "company": "Pharmacy",
+      "role": "Pharmacist Intern",
+      "duration": "May 2024 — June 2024",
       "achievements": [
-        "Provided remote coding services for 8 physician practices across 4 specialties",
-        "Conducted quarterly compliance audits with detailed reporting and recommendations",
-        "Specialized in cardiology and orthopedic surgical coding",
-        "Achieved 99.1% clean claim rate for primary assigned accounts"
+        "Assisted in dispensing medications while ensuring patient safety.",
+        "Collaborated with healthcare professionals to support effective patient care.",
+        "Maintained medication records and supported pharmacy operations.",
+        "Followed healthcare compliance and documentation procedures."
       ]
     }
   ],
-  "testimonials": [
-    {
-      "quote": "Sarah's coding accuracy is exceptional. Her audit program identified over $1.2M in recoverable revenue that we had been leaving on the table. She's not just a coder — she's a strategic asset to our revenue cycle.",
-      "name": "Dr. James Chen",
-      "title": "Chief Medical Officer",
-      "company": "MedVista Health Partners",
-      "avatar": ""
-    },
-    {
-      "quote": "Working with Sarah transformed our denial management process. Her analytical approach to identifying root causes and her ability to educate providers made a measurable impact on our bottom line.",
-      "name": "Rachel Thompson",
-      "title": "Director of Revenue Cycle",
-      "company": "Summit Regional Medical Center",
-      "avatar": ""
-    },
-    {
-      "quote": "Sarah is the rare coder who combines deep technical knowledge with excellent communication skills. She can explain complex coding concepts to providers in a way that actually improves their documentation.",
-      "name": "Dr. Maria Santos",
-      "title": "Practice Administrator",
-      "company": "Lakewood Family Medicine",
-      "avatar": ""
-    },
-    {
-      "quote": "Her HCC risk adjustment work was thorough and compliant. Sarah understands the nuances of Medicare Advantage coding and consistently delivers accurate, well-supported RAF scores.",
-      "name": "Kevin Walsh",
-      "title": "VP of Compliance",
-      "company": "HealthFirst Medicare Plans",
-      "avatar": ""
-    }
-  ],
+  "testimonials": [],
   "contact": {
     "heading": "Let's Work Together",
-    "description": "Whether you need coding expertise, audit services, or compliance consulting, I'd love to hear from you. Let's discuss how I can help optimize your revenue cycle.",
+    "description": "I am eager to apply my coding knowledge and contribute to efficient healthcare revenue cycle management. Please reach out if you have any opportunities!",
     "socials": [
-      { "platform": "LinkedIn", "url": "https://linkedin.com/in/sarahmitchell", "icon": "linkedin" },
-      { "platform": "Email", "url": "mailto:sarah.mitchell@email.com", "icon": "mail" },
-      { "platform": "AAPC Profile", "url": "https://www.aapc.com", "icon": "award" }
+      { "platform": "LinkedIn", "url": "#", "icon": "linkedin" },
+      { "platform": "Email", "url": "mailto:vanajakunuri685@gmail.com", "icon": "mail" },
+      { "platform": "AAPC", "url": "https://www.aapc.com", "icon": "award" }
     ]
   },
   "footer": {
-    "copyright": "© 2026 Sarah Mitchell, CPC, CPMA. All rights reserved.",
+    "copyright": "© 2026 Akunuri Vanaja. All rights reserved.",
     "links": [
       { "text": "Privacy Policy", "url": "#" },
       { "text": "Sitemap", "url": "#" }

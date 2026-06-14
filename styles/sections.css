@@ -503,6 +503,7 @@
 .about__bio p {
   color: var(--color-text-secondary);
   line-height: var(--leading-relaxed);
+  font-size: 1.15rem;
 }
 
 .about__stats {

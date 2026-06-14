@@ -515,10 +515,33 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!isValid) {
-        e.preventDefault(); // Only prevent default if invalid
+        e.preventDefault(); // Prevent default if invalid
       } else {
+        e.preventDefault(); // Also prevent default if valid to use AJAX
         submitBtn.classList.add('loading');
-        // Let the form submit natively to FormSubmit.co for activation
+        
+        // Use FormData to capture all inputs
+        const formData = new FormData(form);
+        
+        fetch('https://formsubmit.co/ajax/vanajakunuri685@gmail.com', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            form.style.display = 'none';
+            successMsg.classList.add('visible');
+            submitBtn.classList.remove('loading');
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+            submitBtn.classList.remove('loading');
+            alert('There was a problem sending your message. Please try again later.');
+        });
       }
     });
 
