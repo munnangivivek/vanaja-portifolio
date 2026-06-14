@@ -517,14 +517,30 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (isValid) {
-        // Simulate API call
         submitBtn.classList.add('loading');
         
-        setTimeout(() => {
-          form.style.display = 'none';
-          successMsg.classList.add('visible');
-          submitBtn.classList.remove('loading');
-        }, 1500);
+        // Use FormData to capture all inputs
+        const formData = new FormData(form);
+        
+        fetch('https://formsubmit.co/ajax/vanajakunuri685@gmail.com', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            form.style.display = 'none';
+            successMsg.classList.add('visible');
+            submitBtn.classList.remove('loading');
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+            submitBtn.classList.remove('loading');
+            alert('There was a problem sending your message. Please try again later.');
+        });
       }
     });
 
