@@ -492,8 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
       let isValid = true;
       const inputs = form.querySelectorAll('input, textarea');
       
@@ -516,31 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      if (isValid) {
+      if (!isValid) {
+        e.preventDefault(); // Only prevent default if invalid
+      } else {
         submitBtn.classList.add('loading');
-        
-        // Use FormData to capture all inputs
-        const formData = new FormData(form);
-        
-        fetch('https://formsubmit.co/ajax/vanajakunuri685@gmail.com', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            form.style.display = 'none';
-            successMsg.classList.add('visible');
-            submitBtn.classList.remove('loading');
-            form.reset();
-        })
-        .catch(error => {
-            console.error('Error submitting form:', error);
-            submitBtn.classList.remove('loading');
-            alert('There was a problem sending your message. Please try again later.');
-        });
+        // Let the form submit natively to FormSubmit.co for activation
       }
     });
 
