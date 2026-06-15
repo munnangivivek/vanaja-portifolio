@@ -51,17 +51,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      const response = await fetch('content.json');
-      if (!response.ok) throw new Error('Failed to load content');
-      portfolioData = await response.json();
-      
-      renderContent();
-      setupInteractions();
+      await fetchContent();
       
     } catch (error) {
       console.error('Error initializing portfolio:', error);
       // Fallback or error state could be handled here
     }
+  }
+
+  const SANITY_PROJECT_ID = 'vqj01d1j';
+  const SANITY_DATASET = 'production';
+  const QUERY = encodeURIComponent(`{
+    "siteSettings": *[_type == "siteSettings"][0],
+    "skills": *[_type == "skillCategory"] | order(order asc),
+    "projects": *[_type == "project"] | order(order asc) {
+      ...,
+      "image": image.asset->url
+    },
+    "experience": *[_type == "experience"] | order(order asc)
+  }`);
+
+  async function fetchContent() {
+    try {
+      const response = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-01-01/data/query/${SANITY_DATASET}?query=${QUERY}`);
+      if (!response.ok) throw new Error('Failed to fetch content from CMS');
+      const { result } = await response.json();
+      
+      // Map Sanity structure back to expected structure
+      portfolioData = {
+        meta: result.siteSettings?.meta || {},
+        hero: result.siteSettings?.hero || {},
+        about: result.siteSettings?.about || {},
+        contact: result.siteSettings?.contact || {},
+        footer: result.siteSettings?.footer || {},
+        skills: result.skills || [],
+        projects: result.projects || [],
+        experience: result.experience || [],
+        testimonials: []
+      };
+      
+      initPortfolio();
+    } catch (error) {
+      console.error('Error initializing portfolio:', error);
+      document.body.innerHTML = '<div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:sans-serif;"><h1>Error loading portfolio data from CMS. Please check the console.</h1></div>';
+    }
+  }
+
+  function initPortfolio() {
+    renderContent();
+    setupInteractions();
   }
 
   /* ===========================================
