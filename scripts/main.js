@@ -51,242 +51,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      await fetchContent();
+      setupInteractions();
       
     } catch (error) {
       console.error('Error initializing portfolio:', error);
-      // Fallback or error state could be handled here
     }
-  }
-
-  const SANITY_PROJECT_ID = 'vqj01d1j';
-  const SANITY_DATASET = 'production';
-  const QUERY = encodeURIComponent(`{
-    "siteSettings": *[_type == "siteSettings"][0],
-    "skills": *[_type == "skillCategory"] | order(order asc),
-    "projects": *[_type == "project"] | order(order asc) {
-      ...,
-      "image": image.asset->url
-    },
-    "experience": *[_type == "experience"] | order(order asc)
-  }`);
-
-  async function fetchContent() {
-    try {
-      const response = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-01-01/data/query/${SANITY_DATASET}?query=${QUERY}`);
-      if (!response.ok) throw new Error('Failed to fetch content from CMS');
-      const { result } = await response.json();
-      
-      // Map Sanity structure back to expected structure
-      portfolioData = {
-        meta: result.siteSettings?.meta || {},
-        hero: result.siteSettings?.hero || {},
-        about: result.siteSettings?.about || {},
-        contact: result.siteSettings?.contact || {},
-        footer: result.siteSettings?.footer || {},
-        skills: result.skills || [],
-        projects: result.projects || [],
-        experience: result.experience || [],
-        testimonials: []
-      };
-      
-      initPortfolio();
-    } catch (error) {
-      console.error('Error initializing portfolio:', error);
-      document.body.innerHTML = '<div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:sans-serif;"><h1>Error loading portfolio data from CMS. Please check the console.</h1></div>';
-    }
-  }
-
-  function initPortfolio() {
-    renderContent();
-    setupInteractions();
   }
 
   /* ===========================================
-     RENDERING
+     INTERACTIONS & LOGIC
      =========================================== */
-  function renderContent() {
-    const d = portfolioData;
-    
-    // Meta & Hero
-    document.title = `${d.meta.name} | ${d.meta.title}`;
-    document.getElementById('nav-name').textContent = d.meta.name;
-    
-    // Make specific words interactive in the headline
-    let headlineHTML = d.hero.headline
-      .replace('Clinical', '<span class="hover-word hover-word--clinical">Clinical</span>')
-      .replace('Data', '<span class="hover-word hover-word--data">Data</span>');
-    document.getElementById('hero-headline').innerHTML = headlineHTML;
-    
-    document.getElementById('hero-subtitle').textContent = d.hero.subtitle;
-    
-    const heroActions = document.getElementById('hero-actions');
-    heroActions.innerHTML = `
-      <a href="${d.hero.ctaPrimary.link}" class="btn btn--primary">${d.hero.ctaPrimary.text}</a>
-      <a href="${d.hero.ctaSecondary.link}" class="btn btn--secondary">${d.hero.ctaSecondary.text}</a>
-    `;
-
-    // About
-    if (d.about.image) {
-      document.getElementById('about-image').src = d.about.image;
-    }
-    const aboutBio = document.getElementById('about-bio');
-    aboutBio.innerHTML = d.about.bio.map(p => `<p>${p}</p>`).join('');
-    
-    const aboutStats = document.getElementById('about-stats');
-    aboutStats.innerHTML = d.about.stats.map(stat => `
-      <div class="about__stat">
-        <div class="about__stat-value" data-target="${stat.value}">${stat.value}${stat.suffix}</div>
-        <div class="about__stat-label">${stat.label}</div>
-      </div>
-    `).join('');
-
-    // Skills
-    const skillsContainer = document.getElementById('skills-container');
-    skillsContainer.innerHTML = d.skills.map((category, index) => `
-      <div class="skills__category card reveal ${index % 2 === 0 ? 'reveal-left' : 'reveal-right'} delay-${(index%2)+1}">
-        <div class="skills__category-header">
-          <div class="icon-box">
-            ${getIcon(category.icon)}
-          </div>
-          <h3 class="skills__category-title">${category.category}</h3>
-        </div>
-        <div class="skills__list">
-          ${category.items.map(skill => {
-            return `
-              <div class="skill__item">
-                <div class="skill__header">
-                  <span class="skill__name">${skill.name}</span>
-                  <span class="skill__level">${skill.level}%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-bar__fill" style="width: 0%" data-width="${skill.level}%">
-                    <div class="progress-bar__glow"></div>
-                  </div>
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    `).join('');
-
-    // Projects
-    renderProjects(d.projects);
-
-    // Experience
-    const expTimeline = document.getElementById('experience-timeline');
-    const expItemsHTML = d.experience.map((exp, i) => `
-      <div class="experience__item reveal delay-${(i%3)+1}">
-        <div class="experience__dot"></div>
-        <div class="experience__card card">
-          <div class="experience__header">
-            <div>
-              <h3 class="experience__role">${exp.role}</h3>
-              <div class="experience__company">${exp.company}</div>
-            </div>
-            <div class="experience__duration">${exp.duration}</div>
-          </div>
-          <div class="experience__achievements">
-            ${exp.achievements.map(ach => `
-              <div class="experience__achievement">${ach}</div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    `).join('');
-
-    expTimeline.innerHTML = `
-      <div class="experience__timeline-fill"></div>
-      ${expItemsHTML}
-    `;
-
-    // Testimonials
-    renderTestimonials(d.testimonials);
-
-    // Contact
-    document.getElementById('contact-heading').textContent = d.contact.heading;
-    document.getElementById('contact-desc').textContent = d.contact.description;
-    
-    const contactDetails = document.getElementById('contact-details');
-    contactDetails.innerHTML = `
-      <div class="contact__detail">
-        <div class="contact__detail-icon icon-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-        </div>
-        <div>
-          <div class="contact__detail-label">Email</div>
-          <a href="mailto:${d.meta.email}" class="contact__detail-value">${d.meta.email}</a>
-        </div>
-      </div>
-      <div class="contact__detail">
-        <div class="contact__detail-icon icon-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        </div>
-        <div>
-          <div class="contact__detail-label">Phone</div>
-          <a href="tel:${d.meta.phone}" class="contact__detail-value">${d.meta.phone}</a>
-        </div>
-      </div>
-      <div class="contact__detail">
-        <div class="contact__detail-icon icon-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-        </div>
-        <div>
-          <div class="contact__detail-label">Location</div>
-          <div class="contact__detail-value">${d.meta.location}</div>
-        </div>
-      </div>
-    `;
-
-    const contactSocials = document.getElementById('contact-socials');
-    contactSocials.innerHTML = d.contact.socials.map(social => `
-      <a href="${social.url}" target="_blank" rel="noopener noreferrer" class="contact__social" aria-label="${social.platform}">
-        ${getIcon(social.icon)}
-      </a>
-    `).join('');
-
-    // Footer
-    document.getElementById('footer-copyright').textContent = d.footer.copyright;
-    document.getElementById('footer-links').innerHTML = d.footer.links.map(link => `
-      <a href="${link.url}" class="footer__link">${link.text}</a>
-    `).join('');
+  function setupInteractions() {
+    setupNavigation();
+    setupScrollReveal();
+    setupProjectFilters();
+    setupFormValidation();
+    setupIVTimeline();
+    setupAboutScrollAnimation();
+    setupHoverEffects();
   }
 
-  function renderProjects(projects) {
-    const filtersContainer = document.getElementById('projects-filters');
-    const gridContainer = document.getElementById('projects-grid');
-    
-    // Extract unique categories
-    const categories = ['All', ...new Set(projects.map(p => p.category))];
-    
-    filtersContainer.innerHTML = categories.map(cat => `
-      <button class="projects__filter ${cat === 'All' ? 'active' : ''}" data-filter="${cat}">
-        ${cat.charAt(0).toUpperCase() + cat.slice(1)}
-      </button>
-    `).join('');
-
-    gridContainer.innerHTML = projects.map((p, i) => `
-      <div class="project-card reveal delay-${(i%3)+1} ${p.featured ? 'featured' : ''}" data-category="${p.category}">
-        <div class="project-card__image">
-          <img src="${p.image}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1551076805-e1869043e560?auto=format&fit=crop&q=80&w=600'">
-          <div class="project-card__overlay">
-            <a href="${p.liveUrl}" class="btn btn--primary">View Details</a>
-            ${p.sourceUrl !== '#' ? `<a href="${p.sourceUrl}" class="btn btn--secondary" style="color:white; border-color:white;">Source</a>` : ''}
-          </div>
-        </div>
-        <div class="project-card__body">
-          <h3 class="project-card__title">${p.title}</h3>
-          <p class="project-card__desc">${p.description}</p>
-          <div class="project-card__tags">
-            ${p.tags.map(tag => `<span class="badge badge--slate">${tag}</span>`).join('')}
-          </div>
-        </div>
-      </div>
-    `).join('');
-
-    // Filter Logic
-    const filterBtns = document.querySelectorAll('.projects__filter');
+  function setupProjectFilters() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
 
     filterBtns.forEach(btn => {
@@ -298,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterValue = btn.getAttribute('data-filter');
 
         projectCards.forEach(card => {
-          if (filterValue === 'All' || card.getAttribute('data-category') === filterValue) {
+          if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
             card.classList.remove('hidden');
             // Retrigger animation
             card.classList.remove('revealed');
@@ -309,45 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
-  }
-
-  function renderTestimonials(testimonials) {
-    const track = document.getElementById('testimonials-track');
-    const dotsContainer = document.getElementById('testimonials-dots');
-    
-    track.innerHTML = testimonials.map(t => `
-      <div class="testimonial-card">
-        <div class="testimonial-card__inner">
-          <svg class="testimonial-card__quote-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-          <p class="testimonial-card__text">"${t.quote}"</p>
-          <div class="testimonial-card__author">
-            ${t.avatar ? `<div class="avatar avatar--lg"><img src="${t.avatar}" alt="${t.name}"></div>` : `<div class="avatar avatar--lg">${t.name.charAt(0)}</div>`}
-            <div class="testimonial-card__info">
-              <div class="testimonial-card__name">${t.name}</div>
-              <div class="testimonial-card__role">${t.title}, ${t.company}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-
-    dotsContainer.innerHTML = testimonials.map((_, i) => `
-      <button class="testimonials__dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="Go to slide ${i+1}"></button>
-    `).join('');
-
-    setupCarousel(testimonials.length);
-  }
-
-  /* ===========================================
-     INTERACTIONS & LOGIC
-     =========================================== */
-  function setupInteractions() {
-    setupNavigation();
-    setupScrollReveal();
-    setupFormValidation();
-    setupIVTimeline();
-    setupAboutScrollAnimation();
-    setupHoverEffects();
   }
 
   function setupNavigation() {
@@ -828,19 +575,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   }
 
-  /* ===========================================
-     UTILITIES
-     =========================================== */
-  function getIcon(name) {
-    const icons = {
-      code: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>',
-      chart: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
-      shield: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
-      tool: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
-      linkedin: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>',
-      mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>',
-      award: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>'
-    };
-    return icons[name] || icons.code;
-  }
 });
